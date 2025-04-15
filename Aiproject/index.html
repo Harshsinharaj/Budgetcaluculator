@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>Budget Planner</h1>
+            <p>Manage your monthly finances with ease</p>
+        </header>
+
+        <div class="budget-container">
+            <div class="input-section">
+                <h2>Income & Expenses</h2>
+                
+                <div class="input-group">
+                    <label for="income">Monthly Income</label>
+                    <i class="fas fa-dollar-sign"></i>
+                    <input type="number" id="income" placeholder="Enter your income">
+                    <span class="input-feedback"><span class="bar"></span></span>
+                </div>
+                
+                <h3>Expenses</h3>
+                
+                <div class="input-group">
+                    <label for="rent">Rent</label>
+                    <i class="fas fa-home"></i>
+                    <input type="number" id="rent" placeholder="Rent/Mortgage">
+                    <span class="input-feedback"><span class="bar"></span></span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="food">Food</label>
+                    <i class="fas fa-utensils"></i>
+                    <input type="number" id="food" placeholder="Groceries/Dining">
+                    <span class="input-feedback"><span class="bar"></span></span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="transportation">Transportation</label>
+                    <i class="fas fa-car"></i>
+                    <input type="number" id="transportation" placeholder="Car/Public Transport">
+                    <span class="input-feedback"><span class="bar"></span></span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="utilities">Utilities</label>
+                    <i class="fas fa-bolt"></i>
+                    <input type="number" id="utilities" placeholder="Electricity/Water/Internet">
+                    <span class="input-feedback"><span class="bar"></span></span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="entertainment">Entertainment</label>
+                    <i class="fas fa-film"></i>
+                    <input type="number" id="entertainment" placeholder="Movies/Subscriptions">
+                    <span class="input-feedback"><span class="bar"></span></span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="others">Others</label>
+                    <i class="fas fa-shopping-bag"></i>
+                    <input type="number" id="others" placeholder="Other expenses">
+                    <span class="input-feedback"><span class="bar"></span></span>
+                </div>
+                
+                <div class="button-group">
+                    <button id="calculate-btn"><i class="fas fa-calculator"></i> Calculate</button>
+                    <button id="reset-btn"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="summary">
+                    <h2>Summary</h2>
+                    <div class="summary-item">
+                        <span>Total Income:</span>
+                        <span id="total-income">$0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Total Expenses:</span>
+                        <span id="total-expenses">$0</span>
+                    </div>
+                    <div class="summary-item balance">
+                        <span>Remaining Balance:</span>
+                        <span id="remaining-balance">$0</span>
+                    </div>
+                    
+                    <div class="savings-goal">
+                        <h3>Savings Goal <span class="tooltip"><i class="fas fa-info-circle"></i>
+                            <span class="tooltip-text">Set a monthly savings target and track your progress</span>
+                        </span></h3>
+                        
+                        <div class="input-group">
+                            <label for="savings-target">Monthly Target</label>
+                            <i class="fas fa-bullseye"></i>
+                            <input type="number" id="savings-target" placeholder="Set your savings goal">
+                        </div>
+                        
+                        <div class="goal-progress">
+                            <div class="progress-bar" id="savings-progress-bar"></div>
+                        </div>
+                        
+                        <div class="goal-info">
+                            <span>$0</span>
+                            <span id="savings-percentage">0%</span>
+                            <span id="savings-target-display">$0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h2>Expense Breakdown</h2>
+                    <canvas id="expense-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-container" id="chatbot-container">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <i class="fas fa-robot"></i>
+                <span>Budget Assistant</span>
+            </div>
+            <div class="chatbot-controls">
+                <button id="chatbot-minimize"><i class="fas fa-minus"></i></button>
+                <button id="chatbot-close"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="chatbot-body">
+            <div class="chatbot-messages" id="chatbot-messages">
+                <!-- Messages will be dynamically inserted here -->
+            </div>
+            <div class="chatbot-input-container">
+                <input type="text" id="chatbot-input" placeholder="Ask something about your budget...">
+                <button id="chatbot-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+            <div class="chatbot-suggestions">
+                <button class="suggestion-chip">How to save money?</button>
+                <button class="suggestion-chip">Budget tips</button>
+                <button class="suggestion-chip">Explain my expenses</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Trigger Button -->
+    <button class="chatbot-trigger" id="chatbot-trigger">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <footer>
+        <p>&copy; <span id="current-year"></span> Budget Planner App | <span class="animated-text">Smart. Simple. Secure.</span></p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
